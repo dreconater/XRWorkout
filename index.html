@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VR Workout Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0f0f0f;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .dashboard {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #1c1c1c;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .title {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+
+    .value {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .small-green {
+      color: #4caf50;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    .section {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      background-color: #2a2a2a;
+      color: #fff;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .environments {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .env-card {
+      background-color: #1c1c1c;
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .env-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    .env-card span {
+      display: block;
+      padding: 10px;
+      background-color: #2a2a2a;
+    }
+
+    a {
+      color: #00c47c;
+      text-decoration: none;
+    }
+
+    .support {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #00c47c;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="card">
+      <div class="title">WORKOUT HISTORY</div>
+      <div class="value">
+        2 minutes <span class="small-green">4% of recommended weekly minimum</span>
+      </div>
+      <div class="subtitle">No scheduled workout yet</div>
+    </div>
+
+    <div class="section">
+      <div class="card" style="flex: 1;">
+        <div class="title">TOTAL COINS</div>
+        <div class="value">338 M</div>
+      </div>
+      <div class="card" style="flex: 1;">
+        <div class="title">COINS EARNED</div>
+        <div class="value">14 K</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="title">ACHIEVEMENTS</div>
+      <div class="value">22</div>
+    </div>
+
+    <div class="card support">
+      Get support on <span class="highlight">Facebook</span> and <span class="highlight">Discord</span><br/>
+      Find all links at <a href="https://linktr.ee/vrworkout">linktr.ee/vrworkout</a> or manage your workouts at <a href="https://portal.vrworkout.at">portal.vrworkout.at</a>
+    </div>
+
+    <div class="button-row">
+      <div class="btn">Exercise Sets</div>
+      <div class="btn">Accepted Challenges</div>
+    </div>
+
+    <div class="title">WORKOUT SEQUENCES</div>
+    <div class="button-row">
+      <div class="btn">New workout sequence</div>
+      <div class="btn">Night City</div>
+    </div>
+
+    <div class="title">YOUR ENVIRONMENTS</div>
+    <div class="environments">
+      <div class="env-card">
+        <img src="https://i.imgur.com/j1dlPfF.jpeg" alt="Halloween"/>
+        <span>Halloween</span>
+      </div>
+      <div class="env-card">
+        <img src="https://i.imgur.com/rMPoA4R.jpeg" alt="Night City"/>
+        <span>Night City</span>
+      </div>
+      <div class="env-card">
+        <img src="https://i.imgur.com/Xd2k1wJ.jpeg" alt="Tropical"/>
+        <span>Tropical</span>
+      </div>
+      <div class="env-card">
+        <img src="https://i.imgur.com/fhy58D6.jpeg" alt="The riddler"/>
+        <span>The riddler</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
