@@ -16,18 +16,26 @@
       font-family: 'Inter', sans-serif;
       background-color: #0f0f0f;
       color: #fff;
+      display: flex;
       padding: 20px;
+      gap: 20px;
     }
 
-    .dashboard {
-      max-width: 700px;
-      margin: 0 auto;
+    .left-panel {
+      flex: 2;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    .card {
+    .right-panel {
+      flex: 1;
+      background-color: #1c1c1c;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .card, .leaderboard-card {
       background-color: #1c1c1c;
       padding: 20px;
       border-radius: 10px;
@@ -42,11 +50,6 @@
     .value {
       font-size: 24px;
       font-weight: bold;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: #aaa;
     }
 
     .small-green {
@@ -79,20 +82,6 @@
       text-align: center;
     }
 
-    .environments {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .env-card {
-      background-color: #1c1c1c;
-      border-radius: 10px;
-      overflow: hidden;
-      text-align: center;
-      font-size: 14px;
-    }
-
     .env-card img {
       width: 100%;
       height: 100px;
@@ -103,11 +92,13 @@
       display: block;
       padding: 10px;
       background-color: #2a2a2a;
+      text-align: center;
     }
 
-    a {
-      color: #00c47c;
-      text-decoration: none;
+    .environments {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
 
     .support {
@@ -116,20 +107,106 @@
       line-height: 1.6;
     }
 
-    .highlight {
+    .tab-buttons {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .tab {
+      flex: 1;
+      background: #2a2a2a;
+      border-radius: 8px;
+      text-align: center;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .create-btn {
+      background: #00c47c;
+      color: #000;
+      text-align: center;
+      margin: 10px 0;
+      border-radius: 8px;
+      padding: 10px;
       font-weight: bold;
+    }
+
+    .leaderboard-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .leaderboard-entry {
+      padding: 8px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    .highlight {
       color: #00c47c;
+      font-weight: bold;
+    }
+
+    /* --- TOP 3 USERS --- */
+    .top-three {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .top-user {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      background-color: #2a2a2a;
+    }
+
+    .top-user.gold {
+      background: linear-gradient(90deg, #ffd700, #ffea70);
+      color: #000;
+    }
+
+    .top-user.silver {
+      background: linear-gradient(90deg, #c0c0c0, #e6e6e6);
+      color: #000;
+    }
+
+    .top-user.bronze {
+      background: linear-gradient(90deg, #cd7f32, #deb887);
+      color: #000;
+    }
+
+    .top-user .rank {
+      font-size: 20px;
+      width: 40px;
+    }
+
+    .top-user .name {
+      flex: 1;
+    }
+
+    .top-user .score {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="dashboard">
+  <div class="left-panel">
+
+    <!-- SCORE SECTION -->
     <div class="card">
       <div class="title">WORKOUT HISTORY</div>
       <div class="value">
         2 minutes <span class="small-green">4% of recommended weekly minimum</span>
       </div>
-      <div class="subtitle">No scheduled workout yet</div>
+      <div class="title">No scheduled workout yet</div>
     </div>
 
     <div class="section">
@@ -148,22 +225,7 @@
       <div class="value">22</div>
     </div>
 
-    <div class="card support">
-      Get support on <span class="highlight">Facebook</span> and <span class="highlight">Discord</span><br/>
-      Find all links at <a href="https://linktr.ee/vrworkout">linktr.ee/vrworkout</a> or manage your workouts at <a href="https://portal.vrworkout.at">portal.vrworkout.at</a>
-    </div>
-
-    <div class="button-row">
-      <div class="btn">Exercise Sets</div>
-      <div class="btn">Accepted Challenges</div>
-    </div>
-
-    <div class="title">WORKOUT SEQUENCES</div>
-    <div class="button-row">
-      <div class="btn">New workout sequence</div>
-      <div class="btn">Night City</div>
-    </div>
-
+    <!-- ENVIRONMENTS -->
     <div class="title">YOUR ENVIRONMENTS</div>
     <div class="environments">
       <div class="env-card">
@@ -182,6 +244,77 @@
         <img src="https://i.imgur.com/fhy58D6.jpeg" alt="The riddler"/>
         <span>The riddler</span>
       </div>
+    </div>
+
+    <!-- CHALLENGES -->
+    <div class="card">
+      <div class="title">Challenges</div>
+      <div class="create-btn">+ Create Challenge</div>
+      <div class="tab-buttons">
+        <div class="tab">MY List</div>
+        <div class="tab">MOST POPULAR</div>
+        <div class="tab">TRENDING</div>
+      </div>
+    </div>
+
+    <!-- SEQUENCES -->
+    <div class="card">
+      <div class="title">Workout Sequences</div>
+      <div class="create-btn">+ Create Sequence</div>
+      <div class="tab-buttons">
+        <div class="tab">MY List</div>
+        <div class="tab">MOST POPULAR</div>
+        <div class="tab">TRENDING</div>
+      </div>
+    </div>
+
+    <!-- EXERCISE SETS -->
+    <div class="card">
+      <div class="title">Exercise Sets</div>
+      <div class="create-btn">+ Create Set</div>
+      <div class="tab-buttons">
+        <div class="tab">MY List</div>
+        <div class="tab">MOST POPULAR</div>
+        <div class="tab">TRENDING</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANEL: LEADERBOARD -->
+  <div class="right-panel">
+    <div class="leaderboard-title">🏆 Leaderboard</div>
+
+    <!-- Top 3 Users Section -->
+    <div class="top-three">
+      <div class="top-user gold">
+        <div class="rank">🥇</div>
+        <div class="name">User1</div>
+        <div class="score">5200 pts</div>
+      </div>
+      <div class="top-user silver">
+        <div class="rank">🥈</div>
+        <div class="name">User2</div>
+        <div class="score">5000 pts</div>
+      </div>
+      <div class="top-user bronze">
+        <div class="rank">🥉</div>
+        <div class="name">User3</div>
+        <div class="score">4900 pts</div>
+      </div>
+    </div>
+
+    <!-- Spacer -->
+    <hr style="border: 1px solid #333; margin: 20px 0;">
+
+    <!-- Your Ranking Section -->
+    <div class="leaderboard-card">
+      <div class="leaderboard-entry"><span>User4</span><span>4700 pts</span></div>
+      <div class="leaderboard-entry"><span>User5</span><span>4600 pts</span></div>
+      <div class="leaderboard-entry highlight"><span>You</span><span>4550 pts</span></div>
+      <div class="leaderboard-entry"><span>User7</span><span>4400 pts</span></div>
+      <div class="leaderboard-entry"><span>User8</span><span>4300 pts</span></div>
+      <div class="leaderboard-entry"><span>User9</span><span>4200 pts</span></div>
     </div>
   </div>
 </body>
