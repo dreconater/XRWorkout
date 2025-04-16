@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VR Workout Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -16,35 +17,70 @@
       font-family: 'Inter', sans-serif;
       background-color: #0f0f0f;
       color: #fff;
-      display: flex;
       padding: 20px;
+    }
+
+    .dashboard {
+      display: flex;
       gap: 20px;
     }
 
-    .left-panel {
-      flex: 2;
+    .main-content {
+      flex: 3;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    .right-panel {
-      flex: 1;
-      background-color: #1c1c1c;
-      border-radius: 10px;
-      padding: 20px;
+    .row {
+      display: flex;
+      gap: 20px;
     }
 
     .card, .leaderboard-card {
       background-color: #1c1c1c;
       padding: 20px;
       border-radius: 10px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
     .title {
       font-size: 14px;
       color: #aaa;
-      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Info icon color changed to white */
+    .title i {
+      font-size: 14px;
+      margin-left: 8px;
+      color: #fff; /* Changed color to white */
+      cursor: pointer;
+    }
+
+    .title i:hover::after {
+      content: attr(data-tooltip);
+      background-color: #333;
+      color: #fff;
+      border-radius: 5px;
+      padding: 5px;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      white-space: nowrap;
     }
 
     .value {
@@ -58,33 +94,22 @@
       margin-left: 8px;
     }
 
-    .section {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .button-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .btn {
-      flex: 1;
-      background-color: #2a2a2a;
-      color: #fff;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
+    .see-all {
+      font-size: 12px;
+      color: #00c47c;
       cursor: pointer;
-      text-align: center;
+      text-align: right;
+      margin-top: -20px;
+    }
+
+    .env-card {
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     .env-card img {
       width: 100%;
-      height: 100px;
+      height: 120px;
       object-fit: cover;
     }
 
@@ -95,41 +120,22 @@
       text-align: center;
     }
 
-    .environments {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .support {
-      font-size: 14px;
-      color: #ccc;
-      line-height: 1.6;
-    }
-
-    .tab-buttons {
-      display: flex;
-      gap: 10px;
-      margin: 10px 0;
-    }
-
-    .tab {
-      flex: 1;
-      background: #2a2a2a;
-      border-radius: 8px;
-      text-align: center;
-      padding: 8px;
-      font-size: 14px;
-    }
-
     .create-btn {
       background: #00c47c;
       color: #000;
-      text-align: center;
-      margin: 10px 0;
-      border-radius: 8px;
-      padding: 10px;
-      font-weight: bold;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .right-panel {
+      flex: 1;
+      background-color: #1c1c1c;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 300px;
     }
 
     .leaderboard-title {
@@ -151,171 +157,187 @@
       font-weight: bold;
     }
 
-    /* --- TOP 3 USERS --- */
-    .top-three {
+    .tab-buttons {
       display: flex;
-      flex-direction: column;
       gap: 10px;
+      margin-bottom: 12px;
     }
 
-    .top-user {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-weight: 600;
-      background-color: #2a2a2a;
-    }
-
-    .top-user.gold {
-      background: linear-gradient(90deg, #ffd700, #ffea70);
-      color: #000;
-    }
-
-    .top-user.silver {
-      background: linear-gradient(90deg, #c0c0c0, #e6e6e6);
-      color: #000;
-    }
-
-    .top-user.bronze {
-      background: linear-gradient(90deg, #cd7f32, #deb887);
-      color: #000;
-    }
-
-    .top-user .rank {
-      font-size: 20px;
-      width: 40px;
-    }
-
-    .top-user .name {
+    .tab {
       flex: 1;
+      background: #2a2a2a;
+      border-radius: 6px;
+      text-align: center;
+      padding: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #aaa;
+      transition: background 0.2s;
     }
 
-    .top-user .score {
+    .tab.active {
+      background: #00c47c;
+      color: #000;
       font-weight: bold;
+    }
+
+    .leaderboard-nav {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      font-size: 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .arrow {
+      padding: 0 10px;
     }
   </style>
 </head>
 <body>
-  <div class="left-panel">
 
-    <!-- SCORE SECTION -->
-    <div class="card">
-      <div class="title">WORKOUT HISTORY</div>
-      <div class="value">
-        2 minutes <span class="small-green">4% of recommended weekly minimum</span>
-      </div>
-      <div class="title">No scheduled workout yet</div>
-    </div>
+<div class="dashboard">
+  <!-- LEFT: Main Content -->
+  <div class="main-content">
 
-    <div class="section">
-      <div class="card" style="flex: 1;">
-        <div class="title">TOTAL COINS</div>
-        <div class="value">338 M</div>
+    <!-- Score Panel -->
+    <div class="row">
+      <div class="card">
+        <div class="title-row">
+          <div class="title">WORKOUT HISTORY<i class="fas fa-info-circle" data-tooltip="Shows the time spent in workout today"></i></div>
+        </div>
+        <div class="value">2 minutes <span class="small-green">4%</span></div>
+        <div class="title">No scheduled workout yet</div>
       </div>
-      <div class="card" style="flex: 1;">
-        <div class="title">COINS EARNED</div>
-        <div class="value">14 K</div>
+      <div class="card">
+        <div class="title">TOTAL COINS<i class="fas fa-info-circle" data-tooltip="Total virtual coins you have earned so far"></i></div>
+        <div class="value">338M</div>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="title">ACHIEVEMENTS</div>
-      <div class="value">22</div>
-    </div>
-
-    <!-- ENVIRONMENTS -->
-    <div class="title">YOUR ENVIRONMENTS</div>
-    <div class="environments">
-      <div class="env-card">
-        <img src="https://i.imgur.com/j1dlPfF.jpeg" alt="Halloween"/>
-        <span>Halloween</span>
+      <div class="card">
+        <div class="title">COINS EARNED<i class="fas fa-info-circle" data-tooltip="Coins earned today"></i></div>
+        <div class="value">14K</div>
       </div>
-      <div class="env-card">
-        <img src="https://i.imgur.com/rMPoA4R.jpeg" alt="Night City"/>
-        <span>Night City</span>
-      </div>
-      <div class="env-card">
-        <img src="https://i.imgur.com/Xd2k1wJ.jpeg" alt="Tropical"/>
-        <span>Tropical</span>
-      </div>
-      <div class="env-card">
-        <img src="https://i.imgur.com/fhy58D6.jpeg" alt="The riddler"/>
-        <span>The riddler</span>
+      <div class="card">
+        <div class="title">ACHIEVEMENTS<i class="fas fa-info-circle" data-tooltip="Total number of badges and goals achieved"></i></div>
+        <div class="value">22</div>
       </div>
     </div>
 
-    <!-- CHALLENGES -->
-    <div class="card">
-      <div class="title">Challenges</div>
-      <div class="create-btn">+ Create Challenge</div>
-      <div class="tab-buttons">
-        <div class="tab">MY List</div>
-        <div class="tab">MOST POPULAR</div>
-        <div class="tab">TRENDING</div>
+    <!-- Environments -->
+    <div class="row">
+      <div class="card">
+        <div class="title-row">
+          <div class="title">ENVIRONMENTS<i class="fas fa-info-circle" data-tooltip="The VR environments you can workout in"></i></div>
+          <div class="create-btn">+ Create</div>
+        </div>
+        <div class="row">
+          <div class="env-card" style="flex: 1;">
+            <img src="img.jpg" alt="Halloween VR" />
+            <span>Halloween</span>
+          </div>
+          <div class="env-card" style="flex: 1;">
+            <img src="img.jpg" alt="Night City VR" />
+            <span>Night City</span>
+          </div>
+        </div>
+        <div class="see-all">See All</div>
       </div>
     </div>
 
-    <!-- SEQUENCES -->
-    <div class="card">
-      <div class="title">Workout Sequences</div>
-      <div class="create-btn">+ Create Sequence</div>
-      <div class="tab-buttons">
-        <div class="tab">MY List</div>
-        <div class="tab">MOST POPULAR</div>
-        <div class="tab">TRENDING</div>
+    <!-- Challenge / Sequence / Exercise Set -->
+    <div class="row">
+      <!-- Challenge -->
+      <div class="card">
+        <div class="title-row">
+          <div class="title">Challenges<i class="fas fa-info-circle" data-tooltip="Challenges are daily or weekly fitness challenges"></i></div>
+          <div class="create-btn">+ Create</div>
+        </div>
+        <div>🔥 30-day Plank</div>
+        <div class="see-all">See All</div>
+      </div>
+
+      <!-- Sequence -->
+      <div class="card">
+        <div class="title-row">
+          <div class="title">Sequences<i class="fas fa-info-circle" data-tooltip="Workout sequences you can follow"></i></div>
+          <div class="create-btn">+ Create</div>
+        </div>
+        <div>⚡ Morning Boost</div>
+        <div class="see-all">See All</div>
+      </div>
+
+      <!-- Exercise Sets -->
+      <div class="card">
+        <div class="title-row">
+          <div class="title">Exercise Sets<i class="fas fa-info-circle" data-tooltip="Predefined sets of exercises"></i></div>
+          <div class="create-btn">+ Create</div>
+        </div>
+        <div>🏋️ Strength Core Set</div>
+        <div class="see-all">See All</div>
       </div>
     </div>
-
-    <!-- EXERCISE SETS -->
-    <div class="card">
-      <div class="title">Exercise Sets</div>
-      <div class="create-btn">+ Create Set</div>
-      <div class="tab-buttons">
-        <div class="tab">MY List</div>
-        <div class="tab">MOST POPULAR</div>
-        <div class="tab">TRENDING</div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- RIGHT PANEL: LEADERBOARD -->
+  <!-- RIGHT: Leaderboard Panel -->
   <div class="right-panel">
     <div class="leaderboard-title">🏆 Leaderboard</div>
 
-    <!-- Top 3 Users Section -->
-    <div class="top-three">
-      <div class="top-user gold">
-        <div class="rank">🥇</div>
-        <div class="name">User1</div>
-        <div class="score">5200 pts</div>
-      </div>
-      <div class="top-user silver">
-        <div class="rank">🥈</div>
-        <div class="name">User2</div>
-        <div class="score">5000 pts</div>
-      </div>
-      <div class="top-user bronze">
-        <div class="rank">🥉</div>
-        <div class="name">User3</div>
-        <div class="score">4900 pts</div>
-      </div>
+    <!-- Tabs -->
+    <div class="tab-buttons">
+      <div class="tab active" onclick="switchLeaderboard('daily', this)">Today</div>
+      <div class="tab" onclick="switchLeaderboard('weekly', this)">This Week</div>
+      <div class="tab" onclick="switchLeaderboard('alltime', this)">All Time</div>
     </div>
 
-    <!-- Spacer -->
-    <hr style="border: 1px solid #333; margin: 20px 0;">
+    <!-- Arrows -->
+    <div class="leaderboard-nav">
+      <div class="arrow" onclick="scrollLeaderboard('up')">⬆</div>
+      <div class="arrow" onclick="scrollLeaderboard('down')">⬇</div>
+    </div>
 
-    <!-- Your Ranking Section -->
-    <div class="leaderboard-card">
-      <div class="leaderboard-entry"><span>User4</span><span>4700 pts</span></div>
-      <div class="leaderboard-entry"><span>User5</span><span>4600 pts</span></div>
-      <div class="leaderboard-entry highlight"><span>You</span><span>4550 pts</span></div>
-      <div class="leaderboard-entry"><span>User7</span><span>4400 pts</span></div>
-      <div class="leaderboard-entry"><span>User8</span><span>4300 pts</span></div>
-      <div class="leaderboard-entry"><span>User9</span><span>4200 pts</span></div>
+    <!-- Leaderboard Containers -->
+    <div id="daily" class="leaderboard-card leaderboard-group">
+      <div class="leaderboard-entry"><span>#1 SpeedyJoe</span><span>950</span></div>
+      <div class="leaderboard-entry"><span>#2 FitCat</span><span>910</span></div>
+      <div class="leaderboard-entry"><span>#3 ZenMax</span><span>905</span></div>
+      <div class="leaderboard-entry"><span>#4 GymBro</span><span>860</span></div>
+      <div class="leaderboard-entry highlight"><span>#5 You</span><span>840</span></div>
+      <div class="leaderboard-entry"><span>#6 RivalRed</span><span>830</span></div>
+    </div>
+
+    <div id="weekly" class="leaderboard-card leaderboard-group" style="display: none;">
+      <div class="leaderboard-entry"><span>#1 IronLungs</span><span>5.8K</span></div>
+      <div class="leaderboard-entry"><span>#2 FitCat</span><span>5.6K</span></div>
+      <div class="leaderboard-entry"><span>#3 SpeedyJoe</span><span>5.4K</span></div>
+      <div class="leaderboard-entry"><span>#4 GymBro</span><span>5.2K</span></div>
+      <div class="leaderboard-entry highlight"><span>#5 You</span><span>5.1K</span></div>
+      <div class="leaderboard-entry"><span>#6 ZenMax</span><span>5.0K</span></div>
+    </div>
+
+    <div id="alltime" class="leaderboard-card leaderboard-group" style="display: none;">
+      <div class="leaderboard-entry"><span>#1 LegacyWolf</span><span>12M</span></div>
+      <div class="leaderboard-entry"><span>#2 UltraFit</span><span>11.5M</span></div>
+      <div class="leaderboard-entry"><span>#3 PowerSurge</span><span>11.3M</span></div>
+      <div class="leaderboard-entry"><span>#10 GymBro</span><span>9.9M</span></div>
+      <div class="leaderboard-entry highlight"><span>#11 You</span><span>9.8M</span></div>
+      <div class="leaderboard-entry"><span>#12 RivalRed</span><span>9.7M</span></div>
     </div>
   </div>
+</div>
+
+<script>
+  function switchLeaderboard(type, tabElement) {
+    document.querySelectorAll(".leaderboard-group").forEach(el => el.style.display = "none");
+    document.getElementById(type).style.display = "block";
+    document.querySelectorAll(".tab").forEach(el => el.classList.remove("active"));
+    tabElement.classList.add("active");
+  }
+
+  function scrollLeaderboard(direction) {
+    alert("Pagination coming soon! This is a placeholder.");
+  }
+</script>
+
 </body>
 </html>
